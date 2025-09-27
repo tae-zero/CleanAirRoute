@@ -29,10 +29,10 @@ const nextConfig = {
     return config;
   },
   
-  // 환경변수 설정
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
+  // 환경변수 설정 (필요시 추가)
+  // env: {
+  //   CUSTOM_KEY: process.env.CUSTOM_KEY,
+  // },
 };
 
 module.exports = nextConfig;

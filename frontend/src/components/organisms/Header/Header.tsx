@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Icon } from '@/components/atoms';
 import { useUserStore } from '@/store/useUserStore';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStore, selectUnreadNotificationCount } from '@/store/useAppStore';
 
 interface HeaderProps {
   className?: string;
@@ -25,9 +25,10 @@ export default function Header({ className }: HeaderProps) {
   
   const { 
     notifications, 
-    unreadNotificationCount,
     removeNotification 
   } = useAppStore();
+  
+  const unreadNotificationCount = useAppStore(selectUnreadNotificationCount);
 
   const handleLogoClick = () => {
     router.push('/');
