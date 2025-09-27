@@ -63,8 +63,8 @@ export default function SearchForm({
       
       return new Promise((resolve) => {
         geocoder.addressSearch(address, (result: unknown, status: unknown) => {
-          if (status === kakao.maps.services.Status.OK) {
-            const coords = result[0];
+          if (status === kakao.maps.services.Status.OK && Array.isArray(result) && result.length > 0) {
+            const coords = result[0] as any;
             resolve({
               name: coords.address_name,
               address: coords.address_name,

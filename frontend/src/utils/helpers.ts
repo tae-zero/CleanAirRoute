@@ -250,24 +250,28 @@ export function getErrorMessage(error: unknown): string {
     return error;
   }
   
-  if (error?.message) {
-    return error.message;
-  }
-  
-  if (error?.response?.data?.message) {
-    return error.response.data.message;
-  }
-  
-  if (error?.status === 404) {
-    return ERROR_MESSAGES.NOT_FOUND;
-  }
-  
-  if (error?.status >= 500) {
-    return ERROR_MESSAGES.SERVER_ERROR;
-  }
-  
-  if (error?.isNetworkError) {
-    return ERROR_MESSAGES.NETWORK_ERROR;
+  if (error && typeof error === 'object') {
+    const errorObj = error as any;
+    
+    if (errorObj.message) {
+      return errorObj.message;
+    }
+    
+    if (errorObj.response?.data?.message) {
+      return errorObj.response.data.message;
+    }
+    
+    if (errorObj.status === 404) {
+      return ERROR_MESSAGES.NOT_FOUND;
+    }
+    
+    if (errorObj.status >= 500) {
+      return ERROR_MESSAGES.SERVER_ERROR;
+    }
+    
+    if (errorObj.isNetworkError) {
+      return ERROR_MESSAGES.NETWORK_ERROR;
+    }
   }
   
   return ERROR_MESSAGES.SERVER_ERROR;
@@ -391,23 +395,25 @@ export function deepClone<T>(obj: T): T {
  * 경로 요청 유효성 검사
  */
 export function validateRouteRequest(request: unknown): { isValid: boolean; error?: string } {
-  if (!request) {
+  if (!request || typeof request !== 'object') {
     return { isValid: false, error: '요청 데이터가 없습니다.' };
   }
   
-  if (!request.start || !request.end) {
+  const req = request as any;
+  
+  if (!req.start || !req.end) {
     return { isValid: false, error: '출발지와 도착지가 필요합니다.' };
   }
   
-  if (!request.start.latitude || !request.start.longitude) {
+  if (!req.start.latitude || !req.start.longitude) {
     return { isValid: false, error: '출발지 좌표가 필요합니다.' };
   }
   
-  if (!request.end.latitude || !request.end.longitude) {
+  if (!req.end.latitude || !req.end.longitude) {
     return { isValid: false, error: '도착지 좌표가 필요합니다.' };
   }
   
-  if (!isValidCoordinate(request.start) || !isValidCoordinate(request.end)) {
+  if (!isValidCoordinate(req.start) || !isValidCoordinate(req.end)) {
     return { isValid: false, error: '유효하지 않은 좌표입니다.' };
   }
   
