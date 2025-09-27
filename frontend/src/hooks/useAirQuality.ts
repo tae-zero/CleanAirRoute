@@ -70,7 +70,7 @@ export function useAirQuality(coordinate: Coordinate, radius: number = 5) {
   }, []);
 
   return {
-    data: airQualityData?.data,
+    data: airQualityData,
     isLoading: isLoading || (!airQualityData && !airQualityError),
     error: error || airQualityError,
     refresh,
