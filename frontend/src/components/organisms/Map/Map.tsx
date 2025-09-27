@@ -49,7 +49,7 @@ const AIR_QUALITY_OPACITY = {
   hazardous: 0.7,
 } as const;
 
-export default function MainMap({
+export default function Map({
   center,
   level = 8,
   routes = [],
@@ -186,7 +186,7 @@ export default function MainMap({
         {showRoutes && routes.map((route) => (
           <React.Fragment key={route.route_id}>
             {/* 출발지 마커 */}
-            <KakaoMapMarker
+            <MapMarker
               position={{ 
                 lat: route.waypoints[0].latitude, 
                 lng: route.waypoints[0].longitude 
@@ -201,7 +201,7 @@ export default function MainMap({
             />
             
             {/* 도착지 마커 */}
-            <KakaoMapMarker
+            <MapMarker
               position={{ 
                 lat: route.waypoints[route.waypoints.length - 1].latitude, 
                 lng: route.waypoints[route.waypoints.length - 1].longitude 
