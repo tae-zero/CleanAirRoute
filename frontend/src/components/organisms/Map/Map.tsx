@@ -130,7 +130,7 @@ export default function Map({
       strokeColor: ROUTE_TYPE_COLORS[route.type as keyof typeof ROUTE_TYPE_COLORS] || '#000000',
       strokeWeight: selectedRouteId === route.route_id ? 5 : 3,
       strokeOpacity: selectedRouteId === route.route_id ? 0.8 : 0.6,
-      strokeStyle: selectedRouteId === route.route_id ? 'solid' : 'shortdash',
+      strokeStyle: (selectedRouteId === route.route_id ? 'solid' : 'shortdash') as 'solid' | 'shortdash',
     }));
   }, [routes, selectedRouteId, showRoutes]);
 
