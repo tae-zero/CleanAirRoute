@@ -62,7 +62,7 @@ export default function SearchForm({
       const geocoder = new kakao.maps.services.Geocoder();
       
       return new Promise((resolve) => {
-        geocoder.addressSearch(address, (result: any, status: any) => {
+        geocoder.addressSearch(address, (result: unknown, status: unknown) => {
           if (status === kakao.maps.services.Status.OK) {
             const coords = result[0];
             resolve({

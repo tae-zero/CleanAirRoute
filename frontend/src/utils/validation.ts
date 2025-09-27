@@ -63,7 +63,7 @@ export const userPreferencesSchema = z.object({
 });
 
 // 검증 함수들
-export function validateCoordinate(coord: any): { isValid: boolean; error?: string } {
+export function validateCoordinate(coord: unknown): { isValid: boolean; error?: string } {
   try {
     coordinateSchema.parse(coord);
     return { isValid: true };
@@ -75,7 +75,7 @@ export function validateCoordinate(coord: any): { isValid: boolean; error?: stri
   }
 }
 
-export function validateLocation(location: any): { isValid: boolean; error?: string } {
+export function validateLocation(location: unknown): { isValid: boolean; error?: string } {
   try {
     locationSchema.parse(location);
     return { isValid: true };
@@ -87,7 +87,7 @@ export function validateLocation(location: any): { isValid: boolean; error?: str
   }
 }
 
-export function validateRouteRequest(request: any): { isValid: boolean; error?: string } {
+export function validateRouteRequest(request: unknown): { isValid: boolean; error?: string } {
   try {
     routeRequestSchema.parse(request);
     return { isValid: true };
@@ -99,7 +99,7 @@ export function validateRouteRequest(request: any): { isValid: boolean; error?: 
   }
 }
 
-export function validateSearchForm(form: any): { isValid: boolean; error?: string } {
+export function validateSearchForm(form: unknown): { isValid: boolean; error?: string } {
   try {
     searchFormSchema.parse(form);
     return { isValid: true };
@@ -111,7 +111,7 @@ export function validateSearchForm(form: any): { isValid: boolean; error?: strin
   }
 }
 
-export function validateUserPreferences(preferences: any): { isValid: boolean; error?: string } {
+export function validateUserPreferences(preferences: unknown): { isValid: boolean; error?: string } {
   try {
     userPreferencesSchema.parse(preferences);
     return { isValid: true };

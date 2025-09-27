@@ -217,7 +217,7 @@ export function throttle<T extends (...args: any[]) => any>(
 /**
  * 로컬 스토리지에 안전하게 저장
  */
-export function setLocalStorage(key: string, value: any): void {
+export function setLocalStorage(key: string, value: unknown): void {
   if (typeof window === 'undefined') return;
   
   try {
@@ -245,7 +245,7 @@ export function getLocalStorage<T>(key: string, defaultValue: T): T {
 /**
  * 에러 메시지를 사용자 친화적으로 변환
  */
-export function getErrorMessage(error: any): string {
+export function getErrorMessage(error: unknown): string {
   if (typeof error === 'string') {
     return error;
   }
@@ -316,7 +316,7 @@ export function parseUrlParams(url: string): Record<string, string> {
 /**
  * 객체를 URL 파라미터로 변환
  */
-export function stringifyUrlParams(params: Record<string, any>): string {
+export function stringifyUrlParams(params: Record<string, unknown>): string {
   const searchParams = new URLSearchParams();
   
   Object.entries(params).forEach(([key, value]) => {
@@ -390,7 +390,7 @@ export function deepClone<T>(obj: T): T {
 /**
  * 경로 요청 유효성 검사
  */
-export function validateRouteRequest(request: any): { isValid: boolean; error?: string } {
+export function validateRouteRequest(request: unknown): { isValid: boolean; error?: string } {
   if (!request) {
     return { isValid: false, error: '요청 데이터가 없습니다.' };
   }

@@ -333,11 +333,11 @@ export const getAirQualityForecast = (latitude: number, longitude: number, horiz
 export const healthCheck = () => apiClient.healthCheck();
 
 // 에러 타입 가드 함수
-export const isApiError = (error: any): error is Error & { status?: number; data?: ApiError } => {
+export const isApiError = (error: unknown): error is Error & { status?: number; data?: ApiError } => {
   return error instanceof Error && 'status' in error;
 };
 
-export const isNetworkError = (error: any): error is Error & { isNetworkError: boolean } => {
+export const isNetworkError = (error: unknown): error is Error & { isNetworkError: boolean } => {
   return error instanceof Error && 'isNetworkError' in error;
 };
 

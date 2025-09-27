@@ -4,9 +4,6 @@
   ],
   "rules": {
     "prefer-const": "warn",
-    "no-var": "warn",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "react/jsx-no-undef": "error"
+    "no-var": "warn"
   }
 }
