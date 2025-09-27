@@ -4,6 +4,16 @@ const nextConfig = {
   swcMinify: true,
   compress: true,
   
+  // 타입 체크 완화
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  
+  // ESLint 완화
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  
   // 이미지 최적화
   images: {
     domains: ['t1.daumcdn.net', 'map.daumcdn.net'],
