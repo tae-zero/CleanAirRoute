@@ -9,7 +9,7 @@ import {
   HeatmapResponse, 
   RouteInfo, 
   Coordinate 
-} from '../../services/api';
+} from '@/services/api';
 import { AIR_QUALITY_COLORS, ROUTE_TYPE_COLORS } from '@/utils/constants';
 
 interface MapProps {
