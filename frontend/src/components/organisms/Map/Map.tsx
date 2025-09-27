@@ -24,7 +24,7 @@ interface MapProps {
   /** 경로 선택 콜백 */
   onRouteSelect?: (routeId: string) => void;
   /** 지도 클릭 콜백 */
-  onMapClick?: (coordinate: Coordinate) => void;
+  onMapClick?: (_map: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => void;
   /** 히트맵 표시 여부 */
   showHeatmap?: boolean;
   /** 경로 표시 여부 */
@@ -93,13 +93,8 @@ export default function Map({
   }, [calculateBounds]);
 
   // 지도 클릭 핸들러
-  const handleMapClick = useCallback((_t: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
-    const latlng = mouseEvent.latLng;
-    const coordinate: Coordinate = {
-      latitude: latlng.getLat(),
-      longitude: latlng.getLng(),
-    };
-    onMapClick?.(coordinate);
+  const handleMapClick = useCallback((map: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
+    onMapClick?.(map, mouseEvent);
   }, [onMapClick]);
 
   // 히트맵 데이터 페칭
