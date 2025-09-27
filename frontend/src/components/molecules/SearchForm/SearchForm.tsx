@@ -127,7 +127,7 @@ export default function SearchForm({
 
   // 현재 위치 설정
   const setCurrentLocation = useCallback(async (field: 'start' | 'end') => {
-    if (!navigator.geolocation) {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
       alert('이 브라우저는 위치 서비스를 지원하지 않습니다.');
       return;
     }

@@ -218,6 +218,8 @@ export function throttle<T extends (...args: any[]) => any>(
  * 로컬 스토리지에 안전하게 저장
  */
 export function setLocalStorage(key: string, value: any): void {
+  if (typeof window === 'undefined') return;
+  
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
@@ -229,6 +231,8 @@ export function setLocalStorage(key: string, value: any): void {
  * 로컬 스토리지에서 안전하게 가져오기
  */
 export function getLocalStorage<T>(key: string, defaultValue: T): T {
+  if (typeof window === 'undefined') return defaultValue;
+  
   try {
     const item = localStorage.getItem(key);
     return item ? JSON.parse(item) : defaultValue;

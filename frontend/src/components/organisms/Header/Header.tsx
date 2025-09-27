@@ -38,7 +38,7 @@ export default function Header({ className }: HeaderProps) {
   };
 
   const handleNotificationClick = () => {
-    console.log('알림 패널 토글');
+    // console.log('알림 패널 토글');
   };
 
   const handleSettingsClick = () => {

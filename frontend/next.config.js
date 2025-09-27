@@ -1,9 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 빌드 최적화
+  swcMinify: true,
+  compress: true,
+  
+  // 이미지 최적화
   images: {
     domains: ['t1.daumcdn.net', 'map.daumcdn.net'],
     unoptimized: true,
   },
+  
+  // API 프록시
   async rewrites() {
     return [
       {
@@ -12,12 +19,19 @@ const nextConfig = {
       },
     ];
   },
+  
+  // Webpack 설정
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
     };
     return config;
+  },
+  
+  // 환경변수 설정
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
 };
 

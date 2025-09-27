@@ -101,7 +101,7 @@ export function useMap() {
 
   // 현재 위치로 이동
   const moveToCurrentLocation = useCallback(() => {
-    if (navigator.geolocation) {
+    if (typeof window !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const coordinate: Coordinate = {

@@ -36,7 +36,7 @@ export default function RouteCard({
         isSelected && 'ring-2 ring-primary-500 bg-primary-50',
         className
       )}
-      hover={true}
+      clickable={true}
       onClick={() => onSelect(route.route_id)}
     >
       {/* 헤더 */}
