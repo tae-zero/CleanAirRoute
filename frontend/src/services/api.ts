@@ -90,9 +90,14 @@ export interface AirQualityData {
 }
 
 export interface AirQualityResponse {
-  success: boolean;
-  data: AirQualityData;
-  message: string;
+  location: Coordinate;
+  air_quality: AirQualityData;
+  station_info: {
+    station_id: string;
+    station_name: string;
+    coordinate: Coordinate;
+    distance: number;
+  };
 }
 
 export interface HeatmapData {
@@ -237,7 +242,7 @@ class ApiClient {
    */
   async getCurrentAirQuality(latitude: number, longitude: number, radius: number = 5): Promise<AirQualityResponse> {
     try {
-      const response = await this.client.get<AirQualityResponse>('/api/v1/air-quality/current', {
+      const response = await this.client.get<any>('/api/v1/air-quality/current', {
         params: {
           latitude,
           longitude,
@@ -245,7 +250,28 @@ class ApiClient {
         },
       });
 
-      return response.data;
+      // API 응답을 AirQualityResponse 형태로 변환
+      const apiData = response.data;
+      return {
+        location: { latitude, longitude },
+        air_quality: {
+          pm25: apiData.pm25 || 0,
+          pm10: apiData.pm10 || 0,
+          o3: apiData.o3 || 0,
+          no2: apiData.no2 || 0,
+          co: apiData.co || 0,
+          so2: apiData.so2 || 0,
+          air_quality_index: apiData.air_quality_index || 0,
+          grade: apiData.grade || 'good',
+          measured_at: apiData.measured_at || new Date().toISOString(),
+        },
+        station_info: {
+          station_id: apiData.station_id || 'unknown',
+          station_name: apiData.station_name || '알 수 없는 측정소',
+          coordinate: { latitude, longitude },
+          distance: apiData.distance || 0,
+        },
+      };
     } catch (error) {
       console.error('현재 대기질 조회 API 호출 실패:', error);
       throw error;

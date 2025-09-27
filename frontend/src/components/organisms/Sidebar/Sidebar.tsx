@@ -49,12 +49,7 @@ export default function Sidebar({ className }: SidebarProps) {
             현재 대기질
           </h2>
           <AirQualityCard
-            data={{
-              ...airQualityData.air_quality,
-              air_quality_index: airQualityData.air_quality.air_quality_index || 0,
-              grade: airQualityData.air_quality.grade || 'good',
-              measured_at: airQualityData.air_quality.measured_at || new Date().toISOString()
-            }}
+            data={airQualityData.air_quality}
             location={airQualityData.station_info.station_name}
             timestamp={airQualityData.air_quality.measured_at}
             showDetails={true}
