@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     kakao_map_key: Optional[str] = None
     
     # 서비스 URL 설정
-    ai_prediction_service_url: str = "http://localhost:8002"
-    data_ingestion_service_url: str = "http://localhost:8001"
+    ai_prediction_service_url: str = "http://localhost:5002"
+    data_ingestion_service_url: str = "http://localhost:5001"
     
     # 보안 설정
     secret_key: str = "your-secret-key-here"

@@ -29,7 +29,7 @@ app = FastAPI(
 )
 
 # 환경 변수
-AI_PREDICTION_URL = os.getenv("AI_PREDICTION_URL", "http://localhost:8002")
+AI_PREDICTION_URL = os.getenv("AI_PREDICTION_URL", "http://localhost:5002")
 KAKAO_MAPS_URL = os.getenv("KAKAO_MAPS_URL", "https://maps.api.kakao.com")
 
 # Pydantic 모델 정의
@@ -480,4 +480,4 @@ async def shutdown_event():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8003)
+    uvicorn.run(app, host="0.0.0.0", port=5003)
