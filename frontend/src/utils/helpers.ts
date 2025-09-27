@@ -382,3 +382,30 @@ export function deepClone<T>(obj: T): T {
   
   return obj;
 }
+
+/**
+ * 경로 요청 유효성 검사
+ */
+export function validateRouteRequest(request: any): { isValid: boolean; error?: string } {
+  if (!request) {
+    return { isValid: false, error: '요청 데이터가 없습니다.' };
+  }
+  
+  if (!request.start || !request.end) {
+    return { isValid: false, error: '출발지와 도착지가 필요합니다.' };
+  }
+  
+  if (!request.start.latitude || !request.start.longitude) {
+    return { isValid: false, error: '출발지 좌표가 필요합니다.' };
+  }
+  
+  if (!request.end.latitude || !request.end.longitude) {
+    return { isValid: false, error: '도착지 좌표가 필요합니다.' };
+  }
+  
+  if (!isValidCoordinate(request.start) || !isValidCoordinate(request.end)) {
+    return { isValid: false, error: '유효하지 않은 좌표입니다.' };
+  }
+  
+  return { isValid: true };
+}
