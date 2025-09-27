@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { Map, MapMarker, Circle, Polyline } from 'react-kakao-maps-sdk';
+import { Map as KakaoMap, MapMarker, Circle, Polyline } from 'react-kakao-maps-sdk';
 import useSWR from 'swr';
 import { Card, Icon, Spinner } from '@/components/atoms';
 import { 
@@ -49,7 +49,7 @@ const AIR_QUALITY_OPACITY = {
   hazardous: 0.7,
 } as const;
 
-export default function Map({
+export default function MainMap({
   center,
   level = 8,
   routes = [],
@@ -149,7 +149,7 @@ export default function Map({
   return (
     <div className="w-full h-full relative">
       {/* Kakao Maps */}
-      <Map
+      <KakaoMap
         center={{ lat: center.latitude, lng: center.longitude }}
         level={level}
         onCreate={handleMapLoad}
@@ -186,7 +186,7 @@ export default function Map({
         {showRoutes && routes.map((route) => (
           <React.Fragment key={route.route_id}>
             {/* 출발지 마커 */}
-            <MapMarker
+            <KakaoMapMarker
               position={{ 
                 lat: route.waypoints[0].latitude, 
                 lng: route.waypoints[0].longitude 
@@ -201,7 +201,7 @@ export default function Map({
             />
             
             {/* 도착지 마커 */}
-            <MapMarker
+            <KakaoMapMarker
               position={{ 
                 lat: route.waypoints[route.waypoints.length - 1].latitude, 
                 lng: route.waypoints[route.waypoints.length - 1].longitude 
@@ -216,7 +216,7 @@ export default function Map({
             />
           </React.Fragment>
         ))}
-      </Map>
+      </KakaoMap>
 
       {/* 지도 컨트롤 오버레이 */}
       <div className="absolute top-4 right-4">
