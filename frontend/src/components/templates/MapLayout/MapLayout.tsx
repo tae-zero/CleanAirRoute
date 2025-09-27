@@ -44,7 +44,7 @@ export default function MapLayout({ className }: MapLayoutProps) {
         <div className="flex-1 relative">
           <Map
             center={mapState.center}
-            zoom={mapState.zoom}
+            level={mapState.zoom}
             routes={searchResults}
             selectedRouteId={mapState.selectedRouteId}
             onRouteSelect={selectRoute}
