@@ -40,14 +40,16 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     
     # CORS 설정
-    allowed_origins: list = ["http://localhost:3000", "http://localhost:3001"]
+    allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:3001"]
     
     # 로깅 설정
     log_level: str = "INFO"
     
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    model_config = {
+        "env_file": ".env",
+        "case_sensitive": False,
+        "extra": "ignore"
+    }
 
 # 전역 설정 인스턴스
 settings = Settings()
