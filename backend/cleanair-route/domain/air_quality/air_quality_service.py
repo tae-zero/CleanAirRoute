@@ -12,11 +12,11 @@ from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime, timedelta
 import httpx
 
-from .air_quality_schema import (
+from domain.air_quality.air_quality_schema import (
     RouteRequest, RouteResponse, RouteInfo, RouteSegment, 
     Coordinate, AirQualityData, AirQualityRequest, AirQualityResponse
 )
-from ...common.config import Settings
+from common.config import Settings
 
 # 로깅 설정
 logger = logging.getLogger(__name__)

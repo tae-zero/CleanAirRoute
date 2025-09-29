@@ -10,12 +10,12 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 
-from ..domain.air_quality import (
+from domain.air_quality import (
     RouteRequest, RouteResponse, AirQualityRequest, AirQualityResponse,
     ErrorResponse, HealthCheckResponse, AirQualityService
 )
-from ..common.config import Settings, get_settings
-from ..common.database import DatabaseSession
+from common.config import Settings, get_settings
+from common.database import DatabaseSession
 
 # 로깅 설정
 logger = logging.getLogger(__name__)
