@@ -13,9 +13,9 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 import time
 
-from .common.config import get_settings
-from .common.database import Base, engine
-from .router import air_quality_router
+from common.config import get_settings
+from common.database import Base, engine
+from router import air_quality_router
 
 # 로깅 설정
 logging.basicConfig(
