@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import useSWR from 'swr';
 import { useAppStore } from '@/store/useAppStore';
 import { getCurrentAirQuality, getAirQualityHeatmap, getAirQualityForecast } from '@/services/api';
 import { getAirQualityGrade, calculateAirQualityScore, getErrorMessage } from '@/utils/helpers';
 import { CACHE_DURATIONS, REFRESH_INTERVALS } from '@/utils/constants';
-import type { Coordinate, AirQualityData, HeatmapData, ForecastData } from '@/types';
+import type { Coordinate, AirQualityData } from '@/types';
 
 // SWR fetcher 함수들
 const airQualityFetcher = async (url: string, latitude: number, longitude: number, radius: number) => {
@@ -27,12 +27,12 @@ export function useAirQuality(coordinate: Coordinate, radius: number = 5) {
   // 현재 대기질 데이터 조회
   const { data: airQualityData, error: airQualityError, mutate } = useSWR(
     coordinate ? ['air-quality', coordinate.latitude, coordinate.longitude, radius] : null,
-    ([, lat, lng, rad]) => airQualityFetcher('', lat, lng, rad),
+    ([, lat, lng, rad]: [string, number, number, number]) => airQualityFetcher('', lat, lng, rad),
     {
       refreshInterval: REFRESH_INTERVALS.AIR_QUALITY,
       revalidateOnFocus: false,
       dedupingInterval: CACHE_DURATIONS.AIR_QUALITY,
-      onError: (error) => {
+      onError: (error: any) => {
         const errorMessage = getErrorMessage(error);
         setError(errorMessage);
         appState.addNotification({
@@ -87,12 +87,12 @@ export function useAirQualityHeatmap(bounds: string, timestamp?: string, polluta
   // 히트맵 데이터 조회
   const { data: heatmapData, error: heatmapError, mutate } = useSWR(
     bounds ? ['heatmap', bounds, timestamp, pollutant] : null,
-    ([, bounds, timestamp, pollutant]) => heatmapFetcher('', bounds, timestamp, pollutant),
+    ([, bounds, timestamp, pollutant]: [string, string, string | undefined, string]) => heatmapFetcher('', bounds, timestamp, pollutant),
     {
       refreshInterval: REFRESH_INTERVALS.HEATMAP,
       revalidateOnFocus: false,
       dedupingInterval: CACHE_DURATIONS.HEATMAP,
-      onError: (error) => {
+      onError: (error: any) => {
         const errorMessage = getErrorMessage(error);
         setError(errorMessage);
         appState.addNotification({
@@ -135,12 +135,12 @@ export function useAirQualityForecast(coordinate: Coordinate, horizon: number = 
   // 예측 데이터 조회
   const { data: forecastData, error: forecastError, mutate } = useSWR(
     coordinate ? ['forecast', coordinate.latitude, coordinate.longitude, horizon] : null,
-    ([, lat, lng, horizon]) => forecastFetcher('', lat, lng, horizon),
+    ([, lat, lng, horizon]: [string, number, number, number]) => forecastFetcher('', lat, lng, horizon),
     {
       refreshInterval: REFRESH_INTERVALS.FORECAST,
       revalidateOnFocus: false,
       dedupingInterval: CACHE_DURATIONS.FORECAST,
-      onError: (error) => {
+      onError: (error: any) => {
         const errorMessage = getErrorMessage(error);
         setError(errorMessage);
         appState.addNotification({
@@ -168,10 +168,10 @@ export function useAirQualityForecast(coordinate: Coordinate, horizon: number = 
   }, [mutate]);
 
   // 예측 데이터 가공
-  const processedForecast = useCallback((data: any) => {
+  const processedForecast = useCallback((data: { forecasts?: Array<{ air_quality: AirQualityData }> }) => {
     if (!data?.forecasts) return [];
     
-    return data.forecasts.map((forecast: any) => ({
+    return data.forecasts.map((forecast) => ({
       ...forecast,
       airQualityGrade: getAirQualityGrade(
         forecast.air_quality.pm25,
@@ -311,7 +311,12 @@ export function useAirQualityAlerts() {
         timestamp: new Date(),
       };
       
-      setAlerts(prev => [alert, ...prev.filter(a => a.id !== alertId)]);
+      setAlerts((prev: Array<{
+        id: string;
+        type: 'warning' | 'info' | 'caution';
+        message: string;
+        timestamp: Date;
+      }>) => [alert, ...prev.filter((a: { id: string }) => a.id !== alertId)]);
       
       appState.addNotification({
         type: grade === 'hazardous' ? 'error' : 'warning',
@@ -322,7 +327,12 @@ export function useAirQualityAlerts() {
   }, [appState]);
 
   const clearAlert = useCallback((alertId: string) => {
-    setAlerts(prev => prev.filter(alert => alert.id !== alertId));
+    setAlerts((prev: Array<{
+      id: string;
+      type: 'warning' | 'info' | 'caution';
+      message: string;
+      timestamp: Date;
+    }>) => prev.filter((alert: { id: string }) => alert.id !== alertId));
   }, []);
 
   const clearAllAlerts = useCallback(() => {

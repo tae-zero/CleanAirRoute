@@ -35,14 +35,14 @@ export interface RouteSegment {
     o3: number;
     no2: number;
     air_quality_index: number;
-    grade: string;
+    grade: 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous';
   };
   instructions: string;
 }
 
 export interface RouteInfo {
   route_id: string;
-  type: string;
+  type: 'fastest' | 'shortest' | 'healthiest';
   summary: {
     duration: number;
     distance: number;
@@ -66,27 +66,15 @@ export interface RouteResponse {
 }
 
 export interface AirQualityData {
-  location: {
-    latitude: number;
-    longitude: number;
-    district: string;
-  };
-  air_quality: {
-    pm25: number;
-    pm10: number;
-    o3: number;
-    no2: number;
-    co: number;
-    so2: number;
-  };
+  pm25: number;
+  pm10: number;
+  o3: number;
+  no2: number;
+  co: number;
+  so2: number;
   air_quality_index: number;
-  grade: string;
+  grade: 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous';
   measured_at: string;
-  station_info: {
-    station_id: string;
-    station_name: string;
-    distance: number;
-  };
 }
 
 export interface AirQualityResponse {
@@ -150,11 +138,11 @@ class ApiClient {
 
     // 요청 인터셉터
     this.client.interceptors.request.use(
-      (config) => {
+      (config: any) => {
         // console.log(`API 요청: ${config.method?.toUpperCase()} ${config.url}`);
         return config;
       },
-      (error) => {
+      (error: any) => {
         console.error('요청 인터셉터 오류:', error);
         return Promise.reject(error);
       }
@@ -262,7 +250,7 @@ class ApiClient {
           co: apiData.co || 0,
           so2: apiData.so2 || 0,
           air_quality_index: apiData.air_quality_index || 0,
-          grade: apiData.grade || 'good',
+          grade: (apiData.grade as 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous') || 'good',
           measured_at: apiData.measured_at || new Date().toISOString(),
         },
         station_info: {

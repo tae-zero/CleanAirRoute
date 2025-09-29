@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   compress: true,
   
-  // 타입 체크 완화
+  // 타입 체크 설정
   typescript: {
     ignoreBuildErrors: false,
   },

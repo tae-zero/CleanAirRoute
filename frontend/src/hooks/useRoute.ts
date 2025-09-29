@@ -4,8 +4,8 @@ import { useMapStore } from '@/store/useMapStore';
 import { useAppStore } from '@/store/useAppStore';
 import { getRouteRecommendations } from '@/services/api';
 import { validateRouteRequest, getErrorMessage } from '@/utils/helpers';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/constants';
-import type { RouteRequest, Location, Coordinate } from '@/types';
+import { ERROR_MESSAGES } from '@/utils/constants';
+import type { RouteRequest, Location, RouteInfo } from '@/types';
 
 export function useRoute() {
   const routeState = useRouteStore();
@@ -35,7 +35,7 @@ export function useRoute() {
         start_lon: request.start.longitude,
         end_lat: request.end.latitude,
         end_lon: request.end.longitude,
-        route_types: request.route_types?.join(','),
+        route_types: request.route_types?.join(',') || 'fastest,shortest,healthiest',
       });
 
       if (response.success && response.routes) {
@@ -96,9 +96,9 @@ export function useRoute() {
   }, [mapState]);
 
   // 경로 즐겨찾기 추가/제거
-  const toggleFavorite = useCallback((route: any) => {
+  const toggleFavorite = useCallback((route: RouteInfo) => {
     const isFavorited = routeState.favoriteRoutes.some(
-      favRoute => favRoute.route_id === route.route_id
+      (favRoute: RouteInfo) => favRoute.route_id === route.route_id
     );
     
     if (isFavorited) {
@@ -119,7 +119,7 @@ export function useRoute() {
   }, [routeState, appState]);
 
   // 검색 기록 추가
-  const addToHistory = useCallback((route: any) => {
+  const addToHistory = useCallback((route: RouteInfo) => {
     routeState.addToHistory(route);
   }, [routeState]);
 
@@ -193,7 +193,7 @@ export function useRoute() {
   useEffect(() => {
     if (routeState.searchResults && routeState.searchResults.length > 0) {
       const selectedRoute = routeState.searchResults.find(
-        route => route.route_id === mapState.selectedRouteId
+        (route: RouteInfo) => route.route_id === mapState.selectedRouteId
       );
       
       if (selectedRoute) {
@@ -233,7 +233,7 @@ export function useRoute() {
     hasFavoriteRoutes: routeState.favoriteRoutes.length > 0,
     hasRecentSearches: routeState.recentSearches.length > 0,
     selectedRoute: routeState.searchResults?.find(
-      route => route.route_id === mapState.selectedRouteId
+      (route: RouteInfo) => route.route_id === mapState.selectedRouteId
     ),
   };
 }

@@ -11,7 +11,7 @@ import type { Coordinate, AirQualityData } from '@/types';
 /**
  * 대기질 등급을 판단하는 함수
  */
-export function getAirQualityGrade(pm25: number, pm10: number, o3: number): string {
+export function getAirQualityGrade(pm25: number, pm10: number, o3: number): 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous' {
   if (pm25 <= AIR_QUALITY_THRESHOLDS.PM25[AIR_QUALITY_GRADES.GOOD] &&
       pm10 <= AIR_QUALITY_THRESHOLDS.PM10[AIR_QUALITY_GRADES.GOOD] &&
       o3 <= AIR_QUALITY_THRESHOLDS.O3[AIR_QUALITY_GRADES.GOOD]) {
