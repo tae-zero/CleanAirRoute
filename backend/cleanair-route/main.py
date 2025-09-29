@@ -111,6 +111,36 @@ async def log_requests(request: Request, call_next):
 # 라우터 등록
 app.include_router(air_quality_router)
 
+# 에러 핸들러
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    """HTTP 예외 처리"""
+    from domain.air_quality import ErrorResponse
+    
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=ErrorResponse(
+            message=exc.detail,
+            error_code=f"HTTP_{exc.status_code}",
+            details={"path": str(request.url)}
+        ).model_dump()
+    )
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    """일반 예외 처리"""
+    from domain.air_quality import ErrorResponse
+    
+    logger.error(f"예상치 못한 오류 발생: {exc}")
+    return JSONResponse(
+        status_code=500,
+        content=ErrorResponse(
+            message="Internal server error",
+            error_code="INTERNAL_ERROR",
+            details={"path": str(request.url)}
+        ).model_dump()
+    )
+
 # 루트 엔드포인트
 @app.get("/")
 async def root():

@@ -302,28 +302,4 @@ async def get_air_quality_heatmap(
         logger.error(f"대기질 히트맵 조회 오류: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-# 에러 핸들러
-@router.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
-    """HTTP 예외 처리"""
-    return JSONResponse(
-        status_code=exc.status_code,
-        content=ErrorResponse(
-            message=exc.detail,
-            error_code=f"HTTP_{exc.status_code}",
-            details={"path": str(request.url)}
-        ).dict()
-    )
-
-@router.exception_handler(Exception)
-async def general_exception_handler(request, exc):
-    """일반 예외 처리"""
-    logger.error(f"예상치 못한 오류 발생: {exc}")
-    return JSONResponse(
-        status_code=500,
-        content=ErrorResponse(
-            message="Internal server error",
-            error_code="INTERNAL_ERROR",
-            details={"path": str(request.url)}
-        ).dict()
-    )
+# 에러 핸들러는 main.py에서 처리
