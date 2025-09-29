@@ -6,6 +6,7 @@
  */
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import type { AirQualityData, AirQualityResponse, AirQualityStation } from '@/types';
 
 // API 기본 URL 설정
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -29,14 +30,7 @@ export interface RouteSegment {
   end: Coordinate;
   distance: number;
   duration: number;
-  air_quality: {
-    pm25: number;
-    pm10: number;
-    o3: number;
-    no2: number;
-    air_quality_index: number;
-    grade: 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous';
-  };
+  air_quality: AirQualityData;
   instructions: string;
 }
 
@@ -65,28 +59,7 @@ export interface RouteResponse {
   message: string;
 }
 
-export interface AirQualityData {
-  pm25: number;
-  pm10: number;
-  o3: number;
-  no2: number;
-  co: number;
-  so2: number;
-  air_quality_index: number;
-  grade: 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous';
-  measured_at: string;
-}
 
-export interface AirQualityResponse {
-  location: Coordinate;
-  air_quality: AirQualityData;
-  station_info: {
-    station_id: string;
-    station_name: string;
-    coordinate: Coordinate;
-    distance: number;
-  };
-}
 
 export interface HeatmapData {
   timestamp: string;
@@ -258,7 +231,7 @@ class ApiClient {
           station_name: apiData.station_name || '알 수 없는 측정소',
           coordinate: { latitude, longitude },
           distance: apiData.distance || 0,
-        },
+        } as AirQualityStation,
       };
     } catch (error) {
       console.error('현재 대기질 조회 API 호출 실패:', error);
