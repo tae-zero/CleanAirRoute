@@ -188,7 +188,7 @@ export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
+  let timeout: number;
   
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
@@ -310,9 +310,9 @@ export function parseUrlParams(url: string): Record<string, string> {
   const params = new URLSearchParams(url.split('?')[1]);
   const result: Record<string, string> = {};
   
-  for (const [key, value] of params) {
+  params.forEach((value, key) => {
     result[key] = value;
-  }
+  });
   
   return result;
 }
@@ -323,11 +323,14 @@ export function parseUrlParams(url: string): Record<string, string> {
 export function stringifyUrlParams(params: Record<string, unknown>): string {
   const searchParams = new URLSearchParams();
   
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      searchParams.append(key, String(value));
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      const value = params[key];
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, String(value));
+      }
     }
-  });
+  }
   
   return searchParams.toString();
 }
