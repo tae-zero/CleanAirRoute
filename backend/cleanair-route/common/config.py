@@ -40,24 +40,22 @@ class Settings(BaseSettings):
     # API 설정
     api_v1_prefix: str = "/api/v1"
     
-    # CORS 설정
-    allowed_origins: List[str] = ["http://localhost:3000", "http://localhost:3001"]
+    # CORS 설정 (문자열로 받아서 내부에서 처리)
+    allowed_origins_str: str = "http://localhost:3000,http://localhost:3001"
     
-    @field_validator('allowed_origins', mode='before')
-    @classmethod
-    def parse_allowed_origins(cls, v):
-        if isinstance(v, str):
-            # 빈 문자열이거나 잘못된 형식인 경우 기본값 사용
-            if not v or v.strip() == '':
-                return ["http://localhost:3000", "http://localhost:3001"]
-            
-            # @ 기호 제거
-            v = v.replace('@', '')
-            
-            # JSON 형식이 아닌 경우 쉼표로 분리
-            if not v.startswith('['):
-                return [origin.strip() for origin in v.split(',') if origin.strip()]
-        return v
+    @property
+    def allowed_origins(self) -> List[str]:
+        """CORS 허용 오리진 리스트를 반환"""
+        if not self.allowed_origins_str or self.allowed_origins_str.strip() == '':
+            return ["http://localhost:3000", "http://localhost:3001"]
+        
+        # @ 기호 제거
+        origins_str = self.allowed_origins_str.replace('@', '')
+        
+        # 쉼표로 분리하여 리스트로 변환
+        origins = [origin.strip() for origin in origins_str.split(',') if origin.strip()]
+        
+        return origins if origins else ["http://localhost:3000", "http://localhost:3001"]
     
     # 로깅 설정
     log_level: str = "INFO"
