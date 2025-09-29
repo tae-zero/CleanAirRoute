@@ -185,12 +185,16 @@ async def not_found_handler(request: Request, exc: Exception):
 
 if __name__ == "__main__":
     import uvicorn
+    import os
+    
+    # Railway 환경변수에서 포트 가져오기, 없으면 기본값 사용
+    port = int(os.getenv("PORT", 5000))
     
     # 개발 서버 실행
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=5000,
-        reload=True,
+        port=port,
+        reload=False,  # Railway에서는 reload 비활성화
         log_level="info"
     )

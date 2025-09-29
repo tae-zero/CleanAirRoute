@@ -17,8 +17,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 애플리케이션 코드 복사
 COPY . .
 
-# 포트 노출
-EXPOSE 5001
+# 포트 노출 (Railway에서 동적으로 할당)
+EXPOSE $PORT
 
 # 애플리케이션 실행
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5001"]
+CMD ["python", "main.py"]

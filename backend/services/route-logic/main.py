@@ -480,4 +480,8 @@ async def shutdown_event():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5003)
+    import os
+    
+    # Railway 환경변수에서 포트 가져오기, 없으면 기본값 사용
+    port = int(os.getenv("PORT", 5003))
+    uvicorn.run(app, host="0.0.0.0", port=port)
