@@ -7,7 +7,7 @@
 
 import os
 from typing import Optional
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     """애플리케이션 설정 클래스"""
