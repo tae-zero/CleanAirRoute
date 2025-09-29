@@ -6,7 +6,8 @@
 """
 
 import os
-from typing import Optional
+from typing import Optional, List
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -40,7 +41,23 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     
     # CORS 설정
-    allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:3001"]
+    allowed_origins: List[str] = ["http://localhost:3000", "http://localhost:3001"]
+    
+    @field_validator('allowed_origins', mode='before')
+    @classmethod
+    def parse_allowed_origins(cls, v):
+        if isinstance(v, str):
+            # 빈 문자열이거나 잘못된 형식인 경우 기본값 사용
+            if not v or v.strip() == '':
+                return ["http://localhost:3000", "http://localhost:3001"]
+            
+            # @ 기호 제거
+            v = v.replace('@', '')
+            
+            # JSON 형식이 아닌 경우 쉼표로 분리
+            if not v.startswith('['):
+                return [origin.strip() for origin in v.split(',') if origin.strip()]
+        return v
     
     # 로깅 설정
     log_level: str = "INFO"
