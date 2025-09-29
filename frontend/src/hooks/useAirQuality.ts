@@ -299,9 +299,14 @@ export function useAirQualityAlerts() {
     
     if (grade === 'unhealthy' || grade === 'very_unhealthy' || grade === 'hazardous') {
       const alertId = `air-quality-${Date.now()}`;
-      const alert = {
+      const alert: {
+        id: string;
+        type: 'warning' | 'caution' | 'info';
+        message: string;
+        timestamp: Date;
+      } = {
         id: alertId,
-        type: grade === 'hazardous' ? 'warning' : 'caution' as const,
+        type: grade === 'hazardous' ? 'warning' : 'caution',
         message: `대기질이 ${grade === 'hazardous' ? '위험' : '나쁨'} 수준입니다. 외출을 자제해주세요.`,
         timestamp: new Date(),
       };
